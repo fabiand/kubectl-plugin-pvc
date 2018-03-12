@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# FIXME Workaround for https://github.com/kubernetes/kubernetes/issues/55708
+[[ "$KUBECTL_PLUGINS_CALLER" ]] && {
+  export ORIGINAL_PWD=$1
+  shift 1
+}
+
 usage() {
   CMD=$0
   [[ "$KUBECTL_PLUGINS_CALLER" ]] && CMD="kubectl plugin pvc"
@@ -94,6 +100,9 @@ _create() {
 
   [[ "$SRC" ]] && {
     [[ "$DST" ]] || fatal "No destination file given"
+
+    [[ "$SRC" == /* ]] || SRC="$ORIGINAL_PWD/$SRC"
+
     echo "Populating PVC"
     tpls pod $PVCNAME $SIZE | kubectl create -f -
     wait_running $PVCNAME
@@ -130,6 +139,7 @@ main() {
     fatal "Unknown command: $1"
   fi
 }
+
 
 if [[ ${#} == 0 || $@ == *-h* ]];
 then

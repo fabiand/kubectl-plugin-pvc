@@ -9,5 +9,5 @@ name: "pvc"
 shortDesc: "Convenient way to create and populate PVs"
 example: "create my-pvc 1Gi foo bar"
 #command: "$(realpath $PLUGIN_PATH/$PLUGIN_CMD)"
-command: "./$PLUGIN_CMD"
+command: "./$PLUGIN_CMD $PWD"
 EOF
