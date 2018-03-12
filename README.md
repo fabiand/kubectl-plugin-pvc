@@ -1,10 +1,7 @@
 [![Build Status](https://travis-ci.org/fabiand/kubectl-plugin-pvc.svg?branch=master)](https://travis-ci.org/fabiand/kubectl-plugin-pvc)
 
 A simple [kubectl binary](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/)
-(ha!) plugin to create and optionally populate PVCs.
-
-This is very handy in the KubeVirt context in order to upload local virtual
-machine images into the cluster.
+(binary, ha!) plugin to create and optionally populate PVCs.
 
 ## Installation
 
@@ -25,7 +22,7 @@ $ bash install.sh
 ### Create and upload
 
 ```bash
-$ kubectl plugin pvc create fedora 10Gi fedora.img disk.img
+$ kubectl plugin pvc create my-data 10Gi README.md README.md
 ```
 
 In order to create a new PVC called `fedora` with a size of _10Gi_ and copy the
@@ -35,6 +32,6 @@ the new PVC.
 ### Cat contents
 
 ```bash
-$ kubectl plugin pvc cat fedora disk.img
+$ kubectl plugin pvc cat my-data README.md
 ```
 
