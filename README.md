@@ -6,7 +6,13 @@ machine images into the cluster.
 
 ## Installation
 
-On your client:
+Without cloning the repo, on your client:
+
+```bash
+curl -L https://github.com/fabiand/kubectl-plugin-pvc/raw/master/install.sh | bash
+```
+
+Or: After cloning the repo, On your client:
 
 ```bash
 $ bash install.sh
