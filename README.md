@@ -26,8 +26,7 @@ $ kubectl plugin pvc create my-data 10Gi README.md README.md
 ```
 
 In order to create a new PVC called `fedora` with a size of _10Gi_ and copy the
-local `fedora.img` into a file called `disk.img` (required for KubeVirt) on
-the new PVC.
+local `README.md` into a file called `README.md` on the new PVC.
 
 ### Cat contents
 
