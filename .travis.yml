@@ -16,6 +16,7 @@ script:
 - bash install.sh
 - kubectl plugin pvc create bar1 1Gi README.md README.md
 - kubectl plugin pvc cat bar1 README.md
+- kubectl plugin pvc cp bar1 README.md README.md
 
 # Check that remote installation works as well
 - rm -rvf ~/.kube/plugins
