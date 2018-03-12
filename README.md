@@ -22,7 +22,7 @@ $ bash install.sh
 
 ## Usage
 
-Once installed:
+### Create and upload
 
 ```bash
 $ kubectl plugin pvc create fedora 10Gi fedora.img disk.img
@@ -31,3 +31,10 @@ $ kubectl plugin pvc create fedora 10Gi fedora.img disk.img
 In order to create a new PVC called `fedora` with a size of _10Gi_ and copy the
 local `fedora.img` into a file called `disk.img` (required for KubeVirt) on
 the new PVC.
+
+### Cat contents
+
+```bash
+$ kubectl plugin pvc cat fedora disk.img
+```
+
