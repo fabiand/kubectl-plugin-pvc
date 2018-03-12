@@ -104,14 +104,28 @@ _create() {
     echo "Cleanup"
     tpls pod $PVCNAME $SIZE | kubectl delete -f -
   }
+}
 
+_cat() {
+  local PVCNAME=$1
+  local FN=$2
+
+  [[ "$PVCNAME" ]] || fatal "No PVC name given"
+  kubectl get pvc $PVCNAME >/dev/null 2>&1 || fatal "PVC '$PVCNAME' does not exists"
+  [[ "$FN" ]] || fatal "No filename given"
+
+  tpls pod $PVCNAME | kubectl create -f - >&2
+  wait_running $PVCNAME
+  kubectl exec $PVCNAME -- sh -c "cd dst && cat $FN"
+  tpls pod $PVCNAME | kubectl delete -f - >&2
 }
 
 main() {
-  if [[ "$1" == create ]];
+  if [[ "$1" == create || "$1" == cat ]];
   then
+    local CMD=_$1
     shift 1
-    _create $@
+    $CMD $@
   else
     fatal "Unknown command: $1"
   fi
