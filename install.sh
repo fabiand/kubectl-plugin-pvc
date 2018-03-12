@@ -7,7 +7,8 @@ PLUGIN_CMD=pvc
 }
 
 mkdir -p "$PLUGIN_PATH"
-install $PLUGIN_CMD "$PLUGIN_PATH/$PLUGIN_CMD"
+cp $PLUGIN_CMD "$PLUGIN_PATH/$PLUGIN_CMD"
+chmod +x "$PLUGIN_PATH/$PLUGIN_CMD"
 
 cat > "$PLUGIN_PATH/plugin.yaml" <<EOF
 name: "pvc"
