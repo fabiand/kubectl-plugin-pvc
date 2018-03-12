@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fabiand/kubectl-plugin-pvc.svg?branch=master)](https://travis-ci.org/fabiand/kubectl-plugin-pvc)
+
 A simple [kubectl binary](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/)
 (ha!) plugin to create and optionally populate PVCs.
 
