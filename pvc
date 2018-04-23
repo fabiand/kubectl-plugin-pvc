@@ -13,13 +13,11 @@ usage() {
 Usage: $CMD create PVCNAME SIZE [SRC DST]"
        $CMD cp PVCNAME SRC DST
        $CMD cat PVCNAME DST
-       $CMD mount PVCNAME DST
 
 create -- This command will create a new PVC of the given name and size.
           Optionally it will copy SRC to DST (within the new PVC).
 cp     -- Copy a local file SRC to the remote destination DST
 cat    -- Cat the contents of DST
-mount  -- Mount the PVC to DST
 EOM
 exit 1
 }
@@ -46,7 +44,6 @@ tpls() {
   local TPLS=$1
   local NAME=$2
   local SIZE=$3
-  local IMAGE=${IMAGE:-busybox}
 
   [[ "$TPLS" == *pvc* ]] && cat <<EOF
 kind: PersistentVolumeClaim
@@ -145,31 +142,8 @@ _cat() {
   tpls pod $PVCNAME | kubectl delete -f - >&2
 }
 
-_mount() {
-  local PVCNAME=$1
-  local DST=$2
-
-  [[ "$PVCNAME" ]] || fatal "No PVC name given"
-  kubectl get pvc $PVCNAME >/dev/null 2>&1 || fatal "PVC '$PVCNAME' does not exists"
-  [[ "$DST" ]] || fatal "No dst path given"
-
-  tpls pod $PVCNAME | kubectl create -f - >&2
-  wait_running $PVCNAME
-  kubectl exec $PVCNAME -- tcpsvd -vE 0.0.0.0 21 ftpd /dst
-  kubectl port-forward $PVCNAME 21:10021 &
-  FWDPID=$!
-  sudo mount -t 9p 127.0.0.1:10021 $DST
-  echo    "The PVC '$PVCNAME' is now mounted to '$DST'."
-  read -p "Hit return once you are done in order to unmount it."
-  sudo umount $DST
-  tpls pod $PVCNAME | kubectl delete -f - >&2
-}
-
 main() {
-  if [[ "$1" == create \
-     || "$1" == cat \
-     || "$1" == cp \
-     || "$1" == mount ]];
+  if [[ "$1" == create || "$1" == cat || "$1" == cp ]];
   then
     local CMD=_$1
     shift 1
