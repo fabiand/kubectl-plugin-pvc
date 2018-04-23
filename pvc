@@ -68,9 +68,9 @@ metadata:
 spec:
   terminationGracePeriodSeconds: 0
   containers:
-    - name: busybox
-      image: busybox
-      command: ["/bin/sleep", "42"]
+    - name: shell
+      image: ${IMAGE}
+      command: ["/bin/sleep", "3600"]
       volumeMounts:
       - mountPath: "/dst"
         name: dst
@@ -121,6 +121,7 @@ _cp() {
   wait_running $PVCNAME
   kubectl cp $SRC $PVCNAME:"/dst/$DST"
   kubectl exec $PVCNAME -- sh -c "cd dst && ls -shAl"
+  kubectl exec $PVCNAME -- sh -c "killall sleep"
 
   echo "Cleanup"
   tpls pod $PVCNAME | kubectl delete -f -
@@ -137,6 +138,7 @@ _cat() {
   tpls pod $PVCNAME | kubectl create -f - >&2
   wait_running $PVCNAME
   kubectl exec $PVCNAME -- sh -c "cd dst && cat $FN"
+  kubectl exec $PVCNAME -- sh -c "killall sleep"
   tpls pod $PVCNAME | kubectl delete -f - >&2
 }
 
