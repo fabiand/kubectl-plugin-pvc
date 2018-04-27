@@ -69,7 +69,7 @@ spec:
   terminationGracePeriodSeconds: 0
   containers:
     - name: shell
-      image: ${IMAGE}
+      image: busybox
       command: ["/bin/sleep", "3600"]
       volumeMounts:
       - mountPath: "/dst"
