@@ -119,7 +119,8 @@ _cp() {
   echo "Populating PVC"
   tpls pod $PVCNAME | kubectl create -f -
   wait_running $PVCNAME
-  kubectl cp $SRC $PVCNAME:"/dst/$DST"
+#  kubectl cp $SRC $PVCNAME:"/dst/$DST"
+  cat $SRC | kubectl exec -it $PVCNAME -- sh -c "cat > /dst/$DST"
   kubectl exec $PVCNAME -- sh -c "cd dst && ls -shAl"
   kubectl exec $PVCNAME -- sh -c "killall sleep"
 
