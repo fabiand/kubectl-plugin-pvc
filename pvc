@@ -120,7 +120,7 @@ _cp() {
   tpls pod $PVCNAME | kubectl create -f -
   wait_running $PVCNAME
 #  kubectl cp $SRC $PVCNAME:"/dst/$DST"
-  cat $SRC | kubectl exec -it $PVCNAME -- sh -c "cat > /dst/$DST"
+  cat $SRC | bzip2 -z | kubectl exec -it $PVCNAME -- sh -c "bzip2 -d > /dst/$DST"
   kubectl exec $PVCNAME -- sh -c "cd dst && ls -shAl"
   kubectl exec $PVCNAME -- sh -c "killall sleep"
 
@@ -138,7 +138,7 @@ _cat() {
 
   tpls pod $PVCNAME | kubectl create -f - >&2
   wait_running $PVCNAME
-  kubectl exec $PVCNAME -- sh -c "cd dst && cat $FN"
+  kubectl exec $PVCNAME -- sh -c "cd dst && cat $FN | bzip2 -z" | bzip2 -d
   kubectl exec $PVCNAME -- sh -c "killall sleep"
   tpls pod $PVCNAME | kubectl delete -f - >&2
 }
